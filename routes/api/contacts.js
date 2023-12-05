@@ -6,7 +6,7 @@ const {
   getById,
   updateById,
 } = require('../../controllers/contacts');
-const { validateBody, isValidId } = require('../../middlewares');
+const { validateBody, isValidId, authenticate } = require('../../middlewares');
 const {
   addSchema,
   updateSchema,
@@ -14,6 +14,8 @@ const {
 } = require('../../models/contact');
 
 const router = express.Router();
+
+router.use(authenticate);
 
 router.get('/', getAll);
 router.get('/:contactId', getById);

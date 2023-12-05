@@ -2,8 +2,12 @@ const { Contact } = require('../../models/contact');
 const { httpError, ctrlWrapper } = require('../../utils');
 
 const getById = async (req, res, next) => {
+  const { _id: owner } = req.user;
   const { contactId } = req.params;
-  const result = await Contact.findOne({ _id: contactId });
+  const result = await Contact.findOne(
+    { _id: contactId, owner },
+    '-updatedAt -createdAt -owner'
+  );
   if (!result) {
     throw httpError({ status: 404 });
   }
