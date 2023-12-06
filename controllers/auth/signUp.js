@@ -1,6 +1,6 @@
+const bcrypt = require('bcryptjs');
 const { User } = require('../../models/user');
 const { ctrlWrapper, httpError } = require('../../utils');
-const bcrypt = require('bcryptjs');
 const uploadImage = require('../../utils/uploadImage');
 
 const signUp = async (req, res, next) => {
@@ -21,6 +21,7 @@ const signUp = async (req, res, next) => {
   });
   result.password = undefined;
   result.token = undefined;
+
   res.status(201).json(result);
 };
 

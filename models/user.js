@@ -1,29 +1,54 @@
-// номер телефона email заменить на рег. выр.
 const { Schema, model } = require('mongoose');
-const { preUpdate, handleMongooseError } = require('./hooks');
 const Joi = require('joi');
+const { preUpdate, handleMongooseError } = require('./hooks');
+const errorMessages = require('../constants/errorMessages');
+const { regEx } = require('../constants');
+
+const { phoneRegEx, emailRegEx, dateOfBirthRegEx } = regEx;
+
+const {
+  emailRegExErr,
+  phoneRegExErr,
+  emailRequiredErr,
+  passwordRequiredErr,
+  passwordLengthErr,
+  firstNameRequiredErr,
+  dateOfBirthRegExErr,
+} = errorMessages;
 
 const userSchema = new Schema(
   {
     firstName: {
       type: String,
-      required: [true, 'First name is required'],
+      required: [true, firstNameRequiredErr],
     },
     lastName: {
       type: String,
     },
     password: {
       type: String,
-      required: [true, 'Password is required'],
+      required: [true, passwordRequiredErr],
     },
     email: {
       type: String,
-      required: [true, 'Email is required'],
+      match: [emailRegEx, emailRegExErr],
+      required: [true, emailRequiredErr],
     },
     avatar: {
       type: String,
       default:
         'https://res.cloudinary.com/dcwbkakpl/image/upload/v1701845113/avatars/default_user_avatar_sr0dpz.jpg',
+    },
+    phone: {
+      type: String,
+      match: [phoneRegEx, phoneRegExErr],
+    },
+    dateOfBirth: {
+      type: String,
+      match: [dateOfBirthRegEx, dateOfBirthRegExErr],
+    },
+    location: {
+      type: String,
     },
     token: {
       type: String,
@@ -40,25 +65,31 @@ userSchema.post('findOneAndUpdate', handleMongooseError);
 const signUpSchema = Joi.object({
   firstName: Joi.string()
     .required()
-    .messages({ 'any.required': 'missing required first name field' }),
+    .messages({ 'any.required': firstNameRequiredErr }),
   lastName: Joi.string(),
-  password: Joi.string().min(6).required().messages({
-    'any.required': 'missing required password field',
-    'string.min': 'Password length must be at least 6 characters long',
+  location: Joi.string(),
+  dateOfBirth: Joi.string().pattern(dateOfBirthRegEx).messages({
+    'string.pattern.base': dateOfBirthRegExErr,
   }),
-  email: Joi.string()
-    .required()
-    .messages({ 'any.required': 'missing required email field' }),
+  password: Joi.string().min(6).required().messages({
+    'any.required': passwordRequiredErr,
+    'string.min': passwordLengthErr,
+  }),
+  email: Joi.string().pattern(emailRegEx).required().messages({
+    'any.required': emailRequiredErr,
+    'string.pattern.base': emailRegExErr,
+  }),
+  phone: Joi.string().pattern(phoneRegEx).messages({
+    'string.pattern.base': phoneRegExErr,
+  }),
 });
 
 const signInSchema = Joi.object({
   password: Joi.string().min(6).required().messages({
-    'any.required': 'missing required password field',
-    'string.min': 'Password length must be at least 6 characters long',
+    'any.required': passwordRequiredErr,
+    'string.min': passwordLengthErr,
   }),
-  email: Joi.string()
-    .required()
-    .messages({ 'any.required': 'missing required email field' }),
+  email: Joi.string().required().messages({ 'any.required': emailRequiredErr }),
 });
 
 const User = model('user', userSchema);

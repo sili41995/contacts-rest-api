@@ -1,15 +1,28 @@
-// номер телефона email заменить на рег. выр.
 const { Schema, model } = require('mongoose');
 const Joi = require('joi');
 const { preUpdate, handleMongooseError } = require('./hooks');
+const errorMessages = require('../constants/errorMessages');
+const { regEx } = require('../constants');
+
+const { phoneRegEx, emailRegEx } = regEx;
+
+const { emailRegExErr, phoneRegExErr, phoneRequiredErr, nameRequiredErr } =
+  errorMessages;
 
 const contactSchema = new Schema(
   {
-    name: { type: String, required: [true, 'Set name for contact'] },
-    email: String,
-    phone: { type: String, required: [true, 'Set phone for contact'] },
+    name: { type: String, required: [true, nameRequiredErr] },
+    email: {
+      type: String,
+      match: [emailRegEx, emailRegExErr],
+    },
+    phone: {
+      type: String,
+      match: [phoneRegEx, phoneRegExErr],
+      required: [true, phoneRequiredErr],
+    },
     favorite: { type: Boolean, default: false },
-    tg_username: String,
+    tgUsername: String,
     avatar: {
       type: String,
       default:
@@ -28,20 +41,21 @@ contactSchema.post('save', handleMongooseError);
 contactSchema.post('findOneAndUpdate', handleMongooseError);
 
 const addSchema = Joi.object({
-  name: Joi.string()
-    .required()
-    .messages({ 'any.required': 'missing required name field' }),
-  email: Joi.string(),
-  phone: Joi.string()
-    .required()
-    .messages({ 'any.required': 'missing required phone field' }),
+  name: Joi.string().required().messages({ 'any.required': nameRequiredErr }),
+  email: Joi.string().pattern(emailRegEx).messages({
+    'string.pattern.base': emailRegExErr,
+  }),
+  phone: Joi.string().pattern(phoneRegEx).required().messages({
+    'any.required': phoneRequiredErr,
+    'string.pattern.base': phoneRegExErr,
+  }),
   favorite: Joi.boolean(),
-  tg_username: Joi.string(),
+  tgUsername: Joi.string(),
 });
 
 const updateSchema = Joi.object()
   .min(1)
-  .messages({ 'object.min': 'missing fields' });
+  .messages({ 'object.min': 'Missing fields' });
 
 const updateStatusContactSchema = Joi.object()
   .keys({

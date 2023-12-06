@@ -1,7 +1,7 @@
-const { User } = require('../../models/user');
-const { ctrlWrapper, httpError } = require('../../utils');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { User } = require('../../models/user');
+const { ctrlWrapper, httpError } = require('../../utils');
 
 const { SECRET_KEY } = process.env;
 
@@ -19,6 +19,7 @@ const signIn = async (req, res, next) => {
   const result = await User.findByIdAndUpdate(user._id, { token }).select(
     '-token -password -createdAt -updatedAt'
   );
+
   res.status(200).json({
     token,
     user: result,

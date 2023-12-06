@@ -1,3 +1,4 @@
+const { findContactsFilter } = require('../../constants');
 const { Contact } = require('../../models/contact');
 const { httpError, ctrlWrapper } = require('../../utils');
 
@@ -7,10 +8,12 @@ const updateById = async (req, res, next) => {
   const result = await Contact.findOneAndUpdate(
     { _id: contactId, owner },
     req.body
-  ).select('-updatedAt -createdAt -owner');
+  ).select(findContactsFilter);
+
   if (!result) {
     throw httpError({ status: 404 });
   }
+
   res.status(200).json(result);
 };
 
