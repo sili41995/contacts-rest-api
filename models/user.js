@@ -20,6 +20,11 @@ const userSchema = new Schema(
       type: String,
       required: [true, 'Email is required'],
     },
+    avatar: {
+      type: String,
+      default:
+        'https://res.cloudinary.com/dcwbkakpl/image/upload/v1701845113/avatars/default_user_avatar_sr0dpz.jpg',
+    },
     token: {
       type: String,
       default: null,

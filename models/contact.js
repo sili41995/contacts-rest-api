@@ -10,6 +10,11 @@ const contactSchema = new Schema(
     phone: { type: String, required: [true, 'Set phone for contact'] },
     favorite: { type: Boolean, default: false },
     tg_username: String,
+    avatar: {
+      type: String,
+      default:
+        'https://res.cloudinary.com/dcwbkakpl/image/upload/v1701845114/avatars/default_contact_avatar_jpghh4.jpg',
+    },
     owner: {
       type: Schema.Types.ObjectId,
       ref: 'user',
