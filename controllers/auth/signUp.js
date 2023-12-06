@@ -3,6 +3,7 @@ const { ctrlWrapper, httpError } = require('../../utils');
 const bcrypt = require('bcryptjs');
 
 const signUp = async (req, res, next) => {
+  console.log(req.file);
   const { password, email } = req.body;
   const user = await User.findOne({ email });
 
