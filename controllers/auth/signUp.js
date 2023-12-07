@@ -5,7 +5,6 @@ const uploadImage = require('../../utils/uploadImage');
 
 const signUp = async (req, res, next) => {
   const { url: avatar } = await uploadImage(req.file);
-  console.log(avatar);
   const { password, email } = req.body;
   const user = await User.findOne({ email });
 

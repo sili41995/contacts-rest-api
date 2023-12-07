@@ -1,7 +1,11 @@
 const fs = require('fs/promises');
 const cloudinary = require('./cloudinary');
 
-const uploadImage = async ({ path }) => {
+const uploadImage = async ({ path } = '') => {
+  if (!path) {
+    return { url: undefined };
+  }
+
   const result = await cloudinary.uploader.upload(path, {
     // public_id: '',
     folder: 'avatars',
