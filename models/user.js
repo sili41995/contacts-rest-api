@@ -22,9 +22,7 @@ const userSchema = new Schema(
       type: String,
       required: [true, nameRequiredErr],
     },
-    lastName: {
-      type: String,
-    },
+    lastName: String,
     password: {
       type: String,
       required: [true, passwordRequiredErr],
@@ -34,25 +32,23 @@ const userSchema = new Schema(
       match: [emailRegEx, emailRegExErr],
       required: [true, emailRequiredErr],
     },
-    avatar: {
-      type: String,
-      default:
-        'https://res.cloudinary.com/dcwbkakpl/image/upload/v1701845113/avatars/default_user_avatar_sr0dpz.jpg',
-    },
     phone: {
       type: String,
       match: [phoneRegEx, phoneRegExErr],
     },
+    location: String,
     dateOfBirth: {
       type: String,
       match: [dateOfBirthRegEx, dateOfBirthRegExErr],
     },
-    location: {
-      type: String,
-    },
     token: {
       type: String,
       default: null,
+    },
+    avatar: {
+      type: String,
+      default:
+        'https://res.cloudinary.com/dcwbkakpl/image/upload/v1701845113/avatars/default_user_avatar_sr0dpz.jpg',
     },
   },
   { versionKey: false, timestamps: true }
@@ -65,10 +61,6 @@ userSchema.post('findOneAndUpdate', handleMongooseError);
 const signUpSchema = Joi.object({
   name: Joi.string().required().messages({ 'any.required': nameRequiredErr }),
   lastName: Joi.string(),
-  location: Joi.string(),
-  dateOfBirth: Joi.string().pattern(dateOfBirthRegEx).messages({
-    'string.pattern.base': dateOfBirthRegExErr,
-  }),
   password: Joi.string().min(6).required().messages({
     'any.required': passwordRequiredErr,
     'string.min': passwordLengthErr,
@@ -79,6 +71,10 @@ const signUpSchema = Joi.object({
   }),
   phone: Joi.string().pattern(phoneRegEx).messages({
     'string.pattern.base': phoneRegExErr,
+  }),
+  location: Joi.string(),
+  dateOfBirth: Joi.string().pattern(dateOfBirthRegEx).messages({
+    'string.pattern.base': dateOfBirthRegExErr,
   }),
 });
 

@@ -12,17 +12,19 @@ const { emailRegExErr, phoneRegExErr, phoneRequiredErr, nameRequiredErr } =
 const contactSchema = new Schema(
   {
     name: { type: String, required: [true, nameRequiredErr] },
-    email: {
-      type: String,
-      match: [emailRegEx, emailRegExErr],
-    },
     phone: {
       type: String,
       match: [phoneRegEx, phoneRegExErr],
       required: [true, phoneRequiredErr],
     },
-    favorite: { type: Boolean, default: false },
+    email: {
+      type: String,
+      match: [emailRegEx, emailRegExErr],
+    },
+    role: String,
+    description: String,
     tgUsername: String,
+    favorite: { type: Boolean, default: false },
     avatar: {
       type: String,
       default:
@@ -42,15 +44,17 @@ contactSchema.post('findOneAndUpdate', handleMongooseError);
 
 const addSchema = Joi.object({
   name: Joi.string().required().messages({ 'any.required': nameRequiredErr }),
-  email: Joi.string().pattern(emailRegEx).messages({
-    'string.pattern.base': emailRegExErr,
-  }),
   phone: Joi.string().pattern(phoneRegEx).required().messages({
     'any.required': phoneRequiredErr,
     'string.pattern.base': phoneRegExErr,
   }),
-  favorite: Joi.boolean(),
+  email: Joi.string().pattern(emailRegEx).messages({
+    'string.pattern.base': emailRegExErr,
+  }),
+  role: Joi.string(),
+  description: Joi.string(),
   tgUsername: Joi.string(),
+  favorite: Joi.boolean(),
 });
 
 const updateSchema = Joi.object()
