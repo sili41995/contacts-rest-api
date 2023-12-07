@@ -12,15 +12,15 @@ const {
   emailRequiredErr,
   passwordRequiredErr,
   passwordLengthErr,
-  firstNameRequiredErr,
+  nameRequiredErr,
   dateOfBirthRegExErr,
 } = errorMessages;
 
 const userSchema = new Schema(
   {
-    firstName: {
+    name: {
       type: String,
-      required: [true, firstNameRequiredErr],
+      required: [true, nameRequiredErr],
     },
     lastName: {
       type: String,
@@ -63,9 +63,7 @@ userSchema.post('save', handleMongooseError);
 userSchema.post('findOneAndUpdate', handleMongooseError);
 
 const signUpSchema = Joi.object({
-  firstName: Joi.string()
-    .required()
-    .messages({ 'any.required': firstNameRequiredErr }),
+  name: Joi.string().required().messages({ 'any.required': nameRequiredErr }),
   lastName: Joi.string(),
   location: Joi.string(),
   dateOfBirth: Joi.string().pattern(dateOfBirthRegEx).messages({
