@@ -16,13 +16,15 @@ const signIn = async (req, res, next) => {
 
   const payload = { id: user._id };
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '10d' });
-  const result = await User.findByIdAndUpdate(user._id, { token }).select(
-    '-token -password -createdAt -updatedAt'
-  );
+  const result = await User.findByIdAndUpdate(user._id, { token });
 
   res.status(200).json({
-    token,
-    user: result,
+    token: result.token,
+    user: {
+      name: result.name,
+      email: result.email,
+      avatar: result.avatar,
+    },
   });
 };
 

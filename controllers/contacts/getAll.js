@@ -1,6 +1,7 @@
-const { findContactsFilter } = require('../../constants');
 const { Contact } = require('../../models/contact');
 const { ctrlWrapper, getFindFilter } = require('../../utils');
+
+const filter = '-updatedAt -createdAt -owner -role -description -tgUsername';
 
 const getAll = async (req, res, next) => {
   const { _id: owner } = req.user;
@@ -8,8 +9,7 @@ const getAll = async (req, res, next) => {
     owner,
     query: req.query,
   });
-
-  const result = await Contact.find(findFilter, findContactsFilter, {
+  const result = await Contact.find(findFilter, filter, {
     skip,
     limit,
   });

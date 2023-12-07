@@ -18,10 +18,12 @@ const signUp = async (req, res, next) => {
     avatar,
     password: hashPassword,
   });
-  result.password = undefined;
-  result.token = undefined;
 
-  res.status(201).json(result);
+  res.status(201).json({
+    name: result.name,
+    email: result.email,
+    avatar: result.avatar,
+  });
 };
 
 module.exports = ctrlWrapper(signUp);
