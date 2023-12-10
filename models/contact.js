@@ -21,7 +21,7 @@ const contactSchema = new Schema(
       type: String,
       match: [emailRegEx, emailRegExErr],
     },
-    role: String,
+    role: { type: String, default: 'my friend' },
     description: String,
     tgUsername: String,
     favorite: { type: Boolean, default: false },
