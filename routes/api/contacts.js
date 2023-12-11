@@ -18,7 +18,7 @@ const router = express.Router();
 router.use(authenticate);
 
 router.get('/', getAll);
-router.get('/:contactId', getById);
+router.get('/:contactId', isValidId, getById);
 router.post('/', validateBody(addSchema), add);
 router.delete('/:contactId', isValidId, deleteById);
 router.put('/:contactId', isValidId, validateBody(updateSchema), updateById);
