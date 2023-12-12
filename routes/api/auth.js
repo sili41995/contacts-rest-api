@@ -1,8 +1,7 @@
 const express = require('express');
 const { signUp, signIn, signOut, current } = require('../../controllers/auth');
-const { validateBody, authenticate } = require('../../middlewares');
+const { validateBody, authenticate, upload } = require('../../middlewares');
 const { signUpSchema, signInSchema } = require('../../models/user');
-const upload = require('../../middlewares/upload');
 
 const router = express.Router();
 

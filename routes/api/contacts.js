@@ -6,7 +6,12 @@ const {
   getById,
   updateById,
 } = require('../../controllers/contacts');
-const { validateBody, isValidId, authenticate } = require('../../middlewares');
+const {
+  validateBody,
+  isValidId,
+  authenticate,
+  upload,
+} = require('../../middlewares');
 const {
   addSchema,
   updateSchema,
@@ -19,7 +24,7 @@ router.use(authenticate);
 
 router.get('/', getAll);
 router.get('/:contactId', isValidId, getById);
-router.post('/', validateBody(addSchema), add);
+router.post('/', upload.single('avatar'), validateBody(addSchema), add);
 router.delete('/:contactId', isValidId, deleteById);
 router.put('/:contactId', isValidId, validateBody(updateSchema), updateById);
 router.patch(
