@@ -1,6 +1,6 @@
 const { findContactFilter } = require('../../constants');
 const { Contact } = require('../../models/contact');
-const { httpError, ctrlWrapper } = require('../../utils');
+const { httpError, ctrlWrapper, deleteImage } = require('../../utils');
 
 const deleteById = async (req, res, next) => {
   const { _id: owner } = req.user;
@@ -13,6 +13,8 @@ const deleteById = async (req, res, next) => {
   if (!result) {
     throw httpError({ status: 404 });
   }
+
+  await deleteImage(result.avatar);
 
   res.status(200).json(result);
 };

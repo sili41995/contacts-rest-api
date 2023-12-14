@@ -2,7 +2,7 @@ const { Schema, model } = require('mongoose');
 const Joi = require('joi');
 const { preUpdate, handleMongooseError } = require('./hooks');
 const errorMessages = require('../constants/errorMessages');
-const { regEx } = require('../constants');
+const { regEx, defaultAvatarsURL } = require('../constants');
 
 const { phoneRegEx, emailRegEx, dateOfBirthRegEx } = regEx;
 
@@ -47,8 +47,7 @@ const userSchema = new Schema(
     },
     avatar: {
       type: String,
-      default:
-        'https://res.cloudinary.com/dcwbkakpl/image/upload/v1701845113/avatars/default_user_avatar_sr0dpz.jpg',
+      default: defaultAvatarsURL.user,
     },
   },
   { versionKey: false, timestamps: true }

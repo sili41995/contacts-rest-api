@@ -7,7 +7,6 @@ const uploadImage = async ({ path } = '') => {
   }
 
   const result = await cloudinary.uploader.upload(path, {
-    // public_id: '',
     folder: 'avatars',
     width: 200,
     height: 200,

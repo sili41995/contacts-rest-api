@@ -2,7 +2,7 @@ const { Schema, model } = require('mongoose');
 const Joi = require('joi');
 const { preUpdate, handleMongooseError } = require('./hooks');
 const errorMessages = require('../constants/errorMessages');
-const { regEx } = require('../constants');
+const { regEx, defaultAvatarsURL } = require('../constants');
 
 const { phoneRegEx, emailRegEx } = regEx;
 
@@ -27,8 +27,7 @@ const contactSchema = new Schema(
     favorite: { type: Boolean, default: false },
     avatar: {
       type: String,
-      default:
-        'https://res.cloudinary.com/dcwbkakpl/image/upload/v1701845114/avatars/default_contact_avatar_jpghh4.jpg',
+      default: defaultAvatarsURL.contact,
     },
     owner: {
       type: Schema.Types.ObjectId,
