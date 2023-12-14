@@ -1,5 +1,11 @@
 const express = require('express');
-const { signUp, signIn, signOut, current } = require('../../controllers/auth');
+const {
+  signUp,
+  signIn,
+  signOut,
+  current,
+  updateAvatar,
+} = require('../../controllers/auth');
 const { validateBody, authenticate, upload } = require('../../middlewares');
 const { signUpSchema, signInSchema } = require('../../models/user');
 
@@ -14,5 +20,6 @@ router.post(
 router.post('/signin', validateBody(signInSchema), signIn);
 router.post('/signout', authenticate, signOut);
 router.get('/current', authenticate, current);
+router.patch('/avatars', authenticate, upload.single('avatar'), updateAvatar);
 
 module.exports = router;

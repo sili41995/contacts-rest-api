@@ -8,10 +8,10 @@ const deleteImage = async (imageURL) => {
   }
 
   const imagePath = imageURL.split('/');
-  const [imageName] = imagePath[imagePath.length - 1].split('.');
-  const imageDir = imagePath[imagePath.length - 2];
+  const [filename] = imagePath[imagePath.length - 1].split('.');
+  const fileDir = imagePath[imagePath.length - 2];
 
-  await cloudinary.api.delete_resources([`${imageDir}/${imageName}`], {
+  await cloudinary.api.delete_resources([`${fileDir}/${filename}`], {
     type: 'upload',
     resource_type: 'image',
   });
