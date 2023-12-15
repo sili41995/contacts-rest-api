@@ -25,9 +25,9 @@ const updateAvatarById = async (req, res, next) => {
   const result = await Contact.findOneAndUpdate(
     { _id: contactId, owner },
     { avatar: avatarURL }
-  );
+  ).select('_id avatar');
 
-  res.status(200).json({ avatar: result.avatar });
+  res.status(200).json(result);
 };
 
 module.exports = ctrlWrapper(updateAvatarById);
