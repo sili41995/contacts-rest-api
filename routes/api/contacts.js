@@ -5,6 +5,7 @@ const {
   getAll,
   getById,
   updateById,
+  updateAvatarById,
 } = require('../../controllers/contacts');
 const {
   validateBody,
@@ -32,6 +33,13 @@ router.patch(
   isValidId,
   validateBody(updateStatusContactSchema),
   updateById
+);
+router.patch(
+  '/:contactId/avatar',
+  authenticate,
+  isValidId,
+  upload.single('avatar'),
+  updateAvatarById
 );
 
 module.exports = router;

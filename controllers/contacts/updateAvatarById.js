@@ -1,0 +1,33 @@
+const { Contact } = require('../../models/contact');
+const {
+  httpError,
+  updateImage,
+  getImageFilename,
+  ctrlWrapper,
+} = require('../../utils');
+
+const updateAvatarById = async (req, res, next) => {
+  const { _id: owner } = req.user;
+  const { contactId } = req.params;
+  const { path } = req.file;
+
+  const contact = await Contact.findOne({ _id: contactId, owner });
+
+  if (!contact) {
+    throw httpError({ status: 404 });
+  }
+
+  const filename = getImageFilename(contact.avatar);
+  const { url: avatarURL } = await updateImage({
+    path,
+    filename,
+  });
+  const result = await Contact.findOneAndUpdate(
+    { _id: contactId, owner },
+    { avatar: avatarURL }
+  );
+
+  res.status(200).json({ avatar: result.avatar });
+};
+
+module.exports = ctrlWrapper(updateAvatarById);
