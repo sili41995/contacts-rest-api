@@ -5,6 +5,7 @@ const getFindFilter = require('./getFindFilter');
 const deleteImage = require('./deleteImage');
 const updateImage = require('./updateImage');
 const getImageFilename = require('./getImageFilename');
+const filterFieldsToUpdate = require('./filterFieldsToUpdate');
 
 module.exports = {
   ctrlWrapper,
@@ -14,4 +15,5 @@ module.exports = {
   deleteImage,
   updateImage,
   getImageFilename,
+  filterFieldsToUpdate,
 };
